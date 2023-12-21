@@ -3,17 +3,23 @@ import * as s from './ContactList.styled';
 import { useDispatch } from 'react-redux';
 
 import { useSelector } from 'react-redux';
-import { deleteContact } from '../../redux/contacts';
-import { selectVisibleContacts } from '../../redux/selectors';
+
+import { selectIsLoading, selectVisibleContacts } from '../../redux/selectors';
+import { deleteContact } from '../../redux/operations';
 
 
 
 export const ContactList = () => {
 
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
+  const filteredContacts = useSelector(selectVisibleContacts);
 
-  const filteredContacts = useSelector(selectVisibleContacts)
   return (
+    <div>
+    {isLoading ? (
+      <p>Loading...</p>
+    ) : (
     <s.List>
       {filteredContacts.map(({id, name, number}) => (
         <s.ListItems key={id}>
@@ -28,5 +34,7 @@ export const ContactList = () => {
         </s.ListItems>
       ))}
     </s.List>
+    )}
+    </div>
   );
 };
